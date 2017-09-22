@@ -170,9 +170,13 @@ def get_init_menu(first_name, is_agent, menu_dict):
     keys.remove('agent')
     return '{} {}'.format(s, menu_dict[keys[0]])
 
-def perform_action(actions, steps, step, session, message, initiator):
-    # Set option if not already set
-    option = session.get_menu_option()
+def perform_action(actions, steps, step, session, message, initiator, has_menu=True):
+    if not has_menu:
+        option = 1
+    else:
+        # Set option if not already set
+        option = session.get_menu_option()
+
     if len(message) == 1 and option == None:
         try:
             option = int(message)
