@@ -220,4 +220,6 @@ def perform_init_action(actions, steps, session, sequence, message, initiator, a
     # Agent dialled normal code e.g. *711*78#
     if menu:
         return NeoAction.response(get_init_menu(actor_first_name, is_agent, menu))
+
+    step = get_step(session, int(sequence))
     return perform_action(actions, steps, step, session, message, initiator)
