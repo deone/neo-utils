@@ -212,7 +212,13 @@ def perform_action(actions, steps, step, session, message, initiator, has_menu=T
     return steps[str(step)](instance, initiator, option)
 
 def perform_init_action(actions, steps, session, sequence, message, initiator, actor_first_name, is_agent, menu=None):
-    session.set_sequence_at_menu(sequence)
+    if not menu:
+        session.set_sequence_at_menu(0)
+        step = get_step(session, int(sequence))
+        has_menu = False
+    else:
+        session.set_sequence_at_menu(sequence)
+
     selection = message.split('*')[-1:]
     if len(selection[0]) == 2:
         # If agent dialled shortcut e.g. *711*78*2#
@@ -224,6 +230,4 @@ def perform_init_action(actions, steps, session, sequence, message, initiator, a
     # Agent dialled normal code e.g. *711*78#
     if menu:
         return NeoAction.response(get_init_menu(actor_first_name, is_agent, menu))
-
-    step = get_step(session, int(sequence))
-    return perform_action(actions, steps, step, session, message, initiator)
+    return perform_action(actions, steps, step, session, message, initiator, has_menu=has_menu)
