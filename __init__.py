@@ -207,7 +207,7 @@ def perform_action(actions, steps, step, session, message, initiator):
 
     return steps[str(step)](instance, initiator, option)
 
-def perform_init_action(actions, steps, session, sequence, message, initiator, actor_first_name, is_agent, menu):
+def perform_init_action(actions, steps, session, sequence, message, initiator, actor_first_name, is_agent, menu=None):
     session.set_sequence_at_menu(sequence)
     selection = message.split('*')[-1:]
     if len(selection[0]) == 2:
@@ -218,4 +218,6 @@ def perform_init_action(actions, steps, session, sequence, message, initiator, a
         return perform_action(actions, steps, step, session, message, initiator)
 
     # Agent dialled normal code e.g. *711*78#
-    return NeoAction.response(get_init_menu(actor_first_name, is_agent, menu))
+    if menu:
+        return NeoAction.response(get_init_menu(actor_first_name, is_agent, menu))
+    return perform_action(actions, steps, step, session, message, initiator)
