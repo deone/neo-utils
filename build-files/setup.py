@@ -30,5 +30,5 @@ setup(
     ],
     keywords='ussd http session json response django',
     packages=find_packages(),
-    install_requires=['Django==1.11.10', 'requests'],
+    install_requires=['Django==1.11.28', 'requests'],
 )
